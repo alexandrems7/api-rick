@@ -5,6 +5,7 @@ const connectDatabase = require("./database/database")
 const userRoute = require("./users/users.route")
 const authRoute = require("./auth/auth.route")
 const charactersRoute = require("./characters/characters.route")
+const swaggerRoute = require("./swagger/swagger.route")
 
 
 
@@ -16,11 +17,10 @@ app.use(cors());
 
 app.use(express.json());
 
-
 app.use("/users", userRoute)
 app.use("/auth", authRoute)
 app.use("/characters", charactersRoute)
-
+app.use("/api-docs", swaggerRoute)
 
 
 app.listen(port, () => console.log(`Servidor rodando na porta ${port}`))
