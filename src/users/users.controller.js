@@ -1,5 +1,5 @@
 const userService = require("./users.service");
-// const authService = require("../auth/auth.service")
+const authService = require("../auth/auth.service")
 // const findByEmailUserService = require("./user.service");
 
 const createUserController = async (req, res) => {
@@ -34,7 +34,7 @@ const createUserController = async (req, res) => {
 
 
 
-//   const token = authService.generateToken(user.id)
+  const token = authService.generateToken(user.id)
 
   res.status(201).send({
     user:{
@@ -45,7 +45,7 @@ const createUserController = async (req, res) => {
       password,
       photo,
     },
-    // token,
+    token,
   });
 
   
