@@ -1,0 +1,28 @@
+{
+  "name": "api-rick",
+  "version": "1.0.0",
+  "description": "Back End para leitura de API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandrems7/api-rick.git"
+  },
+  "keywords": [],
+  "author": "Alexandre MS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexandrems7/api-rick/issues"
+  },
+  "homepage": "https://github.com/alexandrems7/api-rick#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.3",
+    "nodemon": "^2.0.19"
+  }
+}
