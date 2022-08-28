@@ -1,7 +1,7 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { find } = require("../users/User");
-const { findByIdUserService } = require("../users/user.service");
+const { findByIdUserService } = require("../users/users.service");
 
 module.exports = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
 
   const [scheme, token] = parts;
 
-  if (!/^Bearer^/i.test(scheme)) {
+  if (!/^Bearer$/i.test(scheme)) {
     return res.status(401).send({ message: "Caraca, amigão! Token mal-formatado." });
   }
 
