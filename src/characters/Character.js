@@ -11,7 +11,7 @@ const CharacterSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  photo: {
+  imageUrl: {
     type: String,
     required: true,
   },

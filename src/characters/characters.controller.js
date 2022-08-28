@@ -1,26 +1,29 @@
+const { isValidObjectId } = require("mongoose");
 const characterService = require("./characters.service");
 
 //Criação de personagem
 const createCharacterController = async (req, res) => {
   //Tente fazer. Se não cosneguir, traga o catch.
   try {
-
-    const { name, photo} = req.body;
-    if (!name || !photo) {
+    const { name, imageUrl } = req.body;
+    if (!name || !imageUrl) {
       res.status(400).send({
         message:
           "envie todos os dados necessário para a criação do personagem ",
       });
     }
-    const { id } = await characterService.createCharacterService(name, photo, req.userId);
+    const { id } = await characterService.createCharacterService(
+      name,
+      imageUrl,
+      req.userId
+    );
 
     return res.send({
       message: "Personagem criado com sucesso",
-      character: { id, name, photo },
+      character: { id, name, imageUrl },
     });
   } catch (err) {
     res.status(500).send({ message: err.message });
-   
   }
 };
 
@@ -37,7 +40,7 @@ const findAllCharactersController = async (req, res) => {
       results: character.map((character) => ({
         id: character._id,
         name: character.name,
-        photo: character.photo,
+        imageUrl: character.imageUrl,
       })),
     });
   } catch (err) {
@@ -48,7 +51,7 @@ const findAllCharactersController = async (req, res) => {
 //Busca por Id
 const findByIdCharactersController = async (req, res) => {
   try {
-    const character = await characterService.findByIdCharactersService();
+    const character = await characterService.findByIdCharacterService();
 
     if (character.length === 0) {
       return res
@@ -60,7 +63,7 @@ const findByIdCharactersController = async (req, res) => {
       results: character.map((character) => ({
         id: character._id,
         name: character.name,
-        photo: character.photo,
+        imageUrl: character.imageUrl,
       })),
     });
   } catch (err) {
@@ -85,7 +88,7 @@ const searchCharacterController = async (req, res) => {
       results: character.map((character) => ({
         id: character._id,
         name: character.name,
-        photo: character.photo,
+        imageUrl: character.imageUrl,
       })),
     });
   } catch (err) {
@@ -93,9 +96,40 @@ const searchCharacterController = async (req, res) => {
   }
 };
 
+//Deleta personagem
+const deleteCharacterController = async (req, res) => {
+  const idCharacter = req.params.id;
+  console.log(idCharacter);
+
+  if (isValidObjectId(!idCharacter)) {
+    return res
+      .status(400)
+      .send({ message: "Não existe personagem com esse Id" });
+  }
+
+  await characterService.deleteCharacterService(idCharacter);
+
+  res.send({
+    message: `"O personagem foi deletado com sucesso!"`,
+  });
+};
+
+const updateCharacterController = async (req, res) => {
+  const idCharacter = req.params.id;
+
+  const editedCharacter = req.body;
+
+  const updatedCharacter = await characterService.updateCharacterService(
+    idCharacter,
+    editedCharacter
+  );
+  res.send(updatedCharacter);
+};
 module.exports = {
   createCharacterController,
   findAllCharactersController,
   findByIdCharactersController,
   searchCharacterController,
+  deleteCharacterController,
+  updateCharacterController,
 };

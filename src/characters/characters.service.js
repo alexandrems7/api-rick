@@ -1,17 +1,21 @@
 const Character = require("./Character"); //Acesso à Model
 
 //Criação do Personagem
-const createCharacterService = (name, photo, userId) =>
-  Character.create({name, photo, user: userId });
+const createCharacterService = (name, imageUrl, userId) =>
+  Character.create({ name, imageUrl, user: userId });
+
 
 //Procura todos os personagens
-const findAllCharacterService = () =>
+const findAllCharactersService = () =>
   Character.find().sort({ _id: -1 }).populate("user");
 
 //Procura personagens por ID
-  const findByIdCharacterService = () =>
+const findByIdCharacterService = () =>
   Character.findById().sort({ _id: -1 }).populate("user");
 
+const deleteCharacterService = async (idCharacter) => {
+  return await Character.findByIdAndDelete(idCharacter);
+};
 
 //Search
 //i ignora a case sensitive
@@ -22,9 +26,19 @@ const searchCharacterService = (message) =>
     .sort({ _id: -1 })
     .populate("user");
 
+const updateCharacterService = async (idCharacter, editedCharacter) => {
+  const updatedCharacter = await Character.findByIdAndUpdate(
+    idCharacter,
+    editedCharacter
+  );
+  return updatedCharacter;
+};
+
 module.exports = {
   createCharacterService,
-  findAllCharacterService,
+  findAllCharactersService,
   searchCharacterService,
-  findByIdCharacterService
+  findByIdCharacterService,
+  deleteCharacterService,
+  updateCharacterService
 };
