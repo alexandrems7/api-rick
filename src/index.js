@@ -4,6 +4,7 @@ const cors = require("cors");
 const connectDatabase = require("./database/database")
 const userRoute = require("./users/users.route")
 const authRoute = require("./auth/auth.route")
+const charactersRoute = require("./characters/characters.route")
 
 
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/users", userRoute)
 app.use("/auth", authRoute)
+app.use("/characters", charactersRoute)
 
 
 
