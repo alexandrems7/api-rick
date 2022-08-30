@@ -129,7 +129,7 @@ const updateCharacterController = async (req, res) => {
     idCharacter,
     editedCharacter
   );
-  res.send(updatedCharacter);
+  res.send({message: "Personagem editado com sucesso", updatedCharacter});
 };
 module.exports = {
   createCharacterController,
