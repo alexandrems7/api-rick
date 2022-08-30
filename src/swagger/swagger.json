@@ -1,1 +1,395 @@
-{}
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Rick and Morty",
+    "description": "API de personagens",
+    "contact": {
+      "email": "alexandremartins770@gmail.com.br"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api-rick-blue.herokuapp.com",
+      "description": "API no Heroku"
+    },
+    {
+      "url": "http://localhost:3002",
+      "description": "API local"
+    }
+  ],
+  "paths": {
+    "/users/create": {
+      "post": {
+        "summary": "Cria um novo usuário",
+        "description": "Rota responsável pela criação de um novo usuário",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+            
+              "examples": {
+                "Users": {
+                  "value": {
+                    "name": "Alexandre Martins dos Santos",
+                    "username": "ams7",
+                    "email": "ams7@gmail.com",
+                    "password": "abc123",
+                    "photo": "https://avatars.githubusercontent.com/u/83733881?s=400&u=3ca28769bd410d08cfa37a7846431e37b0c6fc0d&v=4"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Not Found"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Buscar todos os usuários",
+        "description": "Rota responsável por buscar todos os usuários",
+        "tags": ["Users"],
+        "responses": {
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Entrar no Sistema",
+        "description": "Rota responsável fazer o login de um user cadastrado",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "email": "ams7@gmail.com",
+                    "password": "abc123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/characters/create": {
+      "post": {
+        "summary": "Criar um novo personagem",
+        "description": "Rota responsável por criar um novo Usuário",
+        "tags": ["Character"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Character"
+              },
+              "examples": {
+                "Character": {
+                  "value": {
+                    "user": "",
+                    "name": "Ethan",
+                    "imageUrl": "https://rickandmortyapi.com/api/character/avatar/114.jpeg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Character"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters": {
+      "get": {
+        "summary": "Buscar todos os personagens",
+        "description": "Rota responsável por buscar todos os personagens",
+        "tags": ["Character"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Character"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters/search": {
+      "get": {
+        "summary": "Buscar personagens por nome",
+        "description": "Rota responsável por buscar os personagens que possuem a letra ou conjunto de letra informados no nome.",
+        "tags": ["Character"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "message",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Character"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters/find/{id}": {
+      "get": {
+        "summary": "Pesquisa o personagem por Id",
+        "description": "Rota responsável por procurar personagens específicos",
+        "tags": ["Character"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "description": "Id do persoangem",
+            "required": true
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/characters/delete/{id}": {
+      "delete": {
+        "summary": "Apaga o personagem",
+        "description": "Rota responsável por excluir um personagem do banco",
+        "tags": ["Character"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id do personagem que deseja deletar",
+            "required": true
+          }
+        ],
+        "responses": {
+          
+          "400": {
+            "description": "Not Found"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/characters/update/{id}": {
+      "put": {
+        "summary": "Edita o personagem",
+        "description": "Rota responsável editar dados de um personagem específico",
+        "tags": ["Character"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters":[
+         { "name": "id",
+          "in": "path",
+          "description": "Id do personagem que deseja editar",
+          "required":true
+        }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Character"
+              },
+              "examples": {
+                "Character": {
+                  "value": {
+                    "name": "Ethan Editado",
+                    "imageUrl": "https://rickandmortyapi.com/api/character/avatar/114.jpeg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+
+          "400": {
+            "description": "Bad Request"
+          },
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schemma": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Character"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          }
+        }
+      },
+      "Character": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "number"
+          }
+          }
+        }
+      }
+    }
+  }
+

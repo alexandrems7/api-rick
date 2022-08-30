@@ -22,12 +22,15 @@ module.exports = (req, res, next) => {
     return res.status(401).send({ message: "Caraca, amigão! Token mal-formatado." });
   }
 
+  //Retirei o id do decoded
+
   jwt.verify(token, process.env.SECRET, async (err, decoded) => {
     const user = await findByIdUserService(decoded.id);
 
     if(err || !user || !user.id){
         return res.status(401).send({ message: "Poxa! Esse token é inválido!" });
     }
+
 
     req.userId = user.id;
 

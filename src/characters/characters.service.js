@@ -4,14 +4,13 @@ const Character = require("./Character"); //Acesso à Model
 const createCharacterService = (name, imageUrl, userId) =>
   Character.create({ name, imageUrl, user: userId });
 
-
 //Procura todos os personagens
 const findAllCharactersService = () =>
   Character.find().sort({ _id: -1 }).populate("user");
 
 //Procura personagens por ID
-const findByIdCharacterService = () =>
-  Character.findById().sort({ _id: -1 }).populate("user");
+const findByIdCharacterService = (idCharacter) =>
+  Character.findById(idCharacter);
 
 const deleteCharacterService = async (idCharacter) => {
   return await Character.findByIdAndDelete(idCharacter);
@@ -40,5 +39,5 @@ module.exports = {
   searchCharacterService,
   findByIdCharacterService,
   deleteCharacterService,
-  updateCharacterService
+  updateCharacterService,
 };

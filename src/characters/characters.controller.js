@@ -51,21 +51,27 @@ const findAllCharactersController = async (req, res) => {
 //Busca por Id
 const findByIdCharactersController = async (req, res) => {
   try {
-    const character = await characterService.findByIdCharacterService();
+    const idCharacter = req.params.id;
 
-    if (character.length === 0) {
-      return res
-        .status(400)
-        .send({ message: "Não existe personagem com esse Id" });
-    }
+    // if (character.length === 0) {
+    //   return res
+    //     .status(400)
+    //     .send({ message: "Não existe personagem com esse Id" });
+    // }
 
-    return res.send({
-      results: character.map((character) => ({
-        id: character._id,
-        name: character.name,
-        imageUrl: character.imageUrl,
-      })),
-    });
+    const character = await characterService.findByIdCharacterService(
+      idCharacter
+    );
+
+    // return res.send({
+    //   results: character.map((character) => ({
+    //     id: character._id,
+    //     name: character.name,
+    //     imageUrl: character.imageUrl,
+    //   })),
+    // });
+
+    return res.send(character);
   } catch (err) {
     res.status(500).send({ message: err.message });
   }
